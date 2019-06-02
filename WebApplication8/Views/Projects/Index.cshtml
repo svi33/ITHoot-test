@@ -1,0 +1,120 @@
+﻿@model IEnumerable<WebApplication8.Models.ProjectViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h2>Project List</h2>
+
+<p>
+    Use Edit for add Coders to project.
+</p>
+<p>
+    <a href="#" onclick="createProject()">Create new</a> 
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                Coders
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @if (item.Coders != null)
+                    {
+                        foreach (var cn in item.Coders)
+                        {
+                            if (cn.Checked)
+                            {<p> @cn.Name</p>}
+                    }
+
+                }
+                </td>
+                <td>
+                    <a href="#" onclick="editProject(@item.ProjectID)">Edit</a> |
+                    <a href="#" onclick="showProject(@item.ProjectID)">Details</a> |
+                    <a href="#" onclick="deleteProject(@item.ProjectID)">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title">Proj</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv">
+
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    var showProject = function (projectID) {
+       var url = "/Projects/p_Details/" + projectID;
+        $("#myModalBodyDiv").load(url, function () {
+            $("#myModal").modal("show");
+
+        });
+
+    }
+
+    var editProject = function (projectID) {
+        var url = "/Projects/p_Edit/" + projectID;
+        $("#myModalBodyDiv").load(url, function () {
+            $("#myModal").modal("show");
+
+        });
+    }
+
+    var deleteProject = function (projectID) {
+        var url = "/Projects/p_Delete/" + projectID;
+        $("#myModalBodyDiv").load(url, function () {
+            $("#myModal").modal("show");
+
+        });
+    }
+
+    var createProject = function () {
+        var url = "/Projects/p_Create";
+        $("#myModalBodyDiv").load(url, function () {
+            $("#myModal").modal("show");
+
+        });
+    }
+
+</script>
